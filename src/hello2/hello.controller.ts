@@ -5,7 +5,11 @@ import { Hi_Res, responseDTO } from 'src/DTO/reponse';
 
 @Controller('hello')
 export class HelloController {
-    constructor(private readonly helloService: HelloService) {}
+  private readonly helloService: HelloService;
+
+    constructor(_helloService: HelloService) {
+      this.helloService = _helloService;
+    }
 
   // @Get()
   // getHello(): string {
