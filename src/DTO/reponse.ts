@@ -17,3 +17,11 @@ export class Board_Res{
 export class Hi_Res{
     Hi : string;
 }
+
+export class CreateUserDto_Res {
+    id: string;
+    pw: string;
+    name: string;
+    age: number;
+    isActive: boolean;
+}

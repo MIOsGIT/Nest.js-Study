@@ -1,7 +1,7 @@
 import { Controller, Get, Patch, Post, Body, Query, Delete, Param } from '@nestjs/common';
 import { HelloService } from './hello.service';
-import { Board, transferDTO, user } from 'src/DTO/transfer';
-import { Hi_Res, responseDTO } from 'src/DTO/reponse';
+import { Board, transferDTO, user, CreateUserDto } from 'src/DTO/transfer';
+import { Hi_Res, responseDTO, CreateUserDto_Res } from 'src/DTO/reponse';
 import { User } from './entity/user.entity';
 
 @Controller('hello')
@@ -13,12 +13,12 @@ export class HelloController {
     }
 
     @Get()
-    findAll(): Promise<User[]> {
+    findAll(): Promise<CreateUserDto_Res[]> {
       return this.helloService.findAll();
     }
 
     @Post()
-    create(@Body() user:User){
+    create(@Body() user:CreateUserDto){
       return this.helloService.create(user);
     }
 

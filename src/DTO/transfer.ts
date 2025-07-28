@@ -16,3 +16,11 @@ export class Board {
 export class Hi{
     Hi : string;
 }
+
+export class CreateUserDto {
+    id: string;
+    pw: string;
+    name: string;
+    age: number;
+    isActive: boolean;
+}

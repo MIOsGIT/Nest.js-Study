@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Board, Hi, transferDTO, user } from 'src/DTO/transfer';
-import { Board_Res, Hi_Res, responseDTO, userresponse } from 'src/DTO/reponse';
+import { Board, Hi, transferDTO, user, CreateUserDto } from 'src/DTO/transfer';
+import { Board_Res, Hi_Res, responseDTO, userresponse, CreateUserDto_Res } from 'src/DTO/reponse';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity'
@@ -12,11 +12,11 @@ export class HelloService {
         private userRepository: Repository<User>,
     ){}
 
-    findAll(): Promise<User[]> {
+    findAll(): Promise<CreateUserDto_Res[]> {
         return this.userRepository.find();
     }
 
-    async create(user: User): Promise<void> {
+    async create(user: CreateUserDto_Res): Promise<void> {
         await this.userRepository.save(user);
     }
     
