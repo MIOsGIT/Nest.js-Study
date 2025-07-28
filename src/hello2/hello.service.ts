@@ -1,17 +1,48 @@
 import { Injectable } from '@nestjs/common';
 import { Board, Hi, transferDTO, user } from 'src/DTO/transfer';
 import { Board_Res, Hi_Res, responseDTO, userresponse } from 'src/DTO/reponse';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './entity/user.entity'
 
 @Injectable()
-
 export class HelloService {
+    constructor(
+        @InjectRepository(User)
+        private userRepository: Repository<User>,
+    ){}
+
+    findAll(): Promise<User[]> {
+        return this.userRepository.find();
+    }
+
+    async create(user: User): Promise<void> {
+        await this.userRepository.save(user);
+    }
+    
+    async remove(id: string): Promise<void> {
+        await this.userRepository.delete(id);
+    }
+
+    // async update(id: string, user: User): Promise<void> {
+    //     const existCat = await this.userRepository.findOne(id);
+    //     if(existCat){
+    //         await getConnection()
+    //             .createQueryBuilder()
+    //             .update(User)
+    //             .set({ 
+    //                 id: user.id,
+    //                 pw: user.pw,
+    //                 name: user.name, 
+    //                 age: user.age,
+    //             })
+    //             .where("id = :id", { id })
+    //             .execute();
+    //     }
+    // }
+
     myID: string;
     myPW: string;
-    
-    constructor(){
-        this.myID = "jazzb04";
-        this.myPW = "alwnalwn";
-    }
 
     // userlist : Array <string>
 
