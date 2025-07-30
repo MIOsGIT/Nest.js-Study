@@ -1,4 +1,4 @@
-import { transferDTO } from "./transfer";
+import { transferDTO } from "./request";
 
 export class responseDTO{
     respond : string;
@@ -9,7 +9,7 @@ export class userresponse{
     PW : string;
 }
 
-export class Board_Res{
+export class Board_Res0{
     Title : string;
     Des : string;
 }
@@ -23,5 +23,21 @@ export class CreateUserDto_Res {
     pw: string;
     name: string;
     age: number;
-    isActive: boolean;
+}
+export class UpdateUserDto_Res {
+    id: string;
+    pw: string;
+    name: string;
+    age: number;
+}
+export class User_Res {
+    id: string;
+    pw: string;
+    name: string;
+    age: number;
+}
+export class Board_Res {
+    id: string;
+    title: string;
+    description: string;
 }

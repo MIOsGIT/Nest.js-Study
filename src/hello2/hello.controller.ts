@@ -1,7 +1,7 @@
 import { Controller, Get, Patch, Post, Body, Query, Delete, Param } from '@nestjs/common';
 import { HelloService } from './hello.service';
-import { Board, transferDTO, user, CreateUserDto } from 'src/DTO/transfer';
-import { Hi_Res, responseDTO, CreateUserDto_Res } from 'src/DTO/reponse';
+import { Board, transferDTO, user, CreateUserDto } from 'src/dto/request';
+import { Hi_Res, responseDTO, CreateUserDto_Res } from 'src/dto/reponse';
 import { User } from './entity/user.entity';
 
 @Controller('hello')
@@ -17,9 +17,20 @@ export class HelloController {
       return this.helloService.findAll();
     }
 
+    @Get(':id')
+    findOne(@Param('id') id: string): Promise<CreateUserDto_Res | null> {
+      return this.helloService.findOne(id);
+    }
+
     @Post()
     create(@Body() user:CreateUserDto){
       return this.helloService.create(user);
+    }
+
+    @Patch(':id')
+    update(@Param('id')id: string, @Body() user: CreateUserDto_Res){
+      //this.helloService.update(id, user);
+      return `This action updates a #${id}`;
     }
 
     @Delete(':id')

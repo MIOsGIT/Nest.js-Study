@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Board, Hi, transferDTO, user, CreateUserDto } from 'src/DTO/transfer';
-import { Board_Res, Hi_Res, responseDTO, userresponse, CreateUserDto_Res } from 'src/DTO/reponse';
+import { Board, Hi, transferDTO, user, CreateUserDto } from 'src/dto/request';
+import { Board_Res, Hi_Res, responseDTO, userresponse, CreateUserDto_Res, Board_Res0 } from 'src/dto/reponse';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity'
@@ -16,30 +16,46 @@ export class HelloService {
         return this.userRepository.find();
     }
 
+    async findOne(id: string): Promise<CreateUserDto_Res | null> {
+        const user = await this.userRepository.findOne({
+        where: { id: id }
+    });
+    if (!user) return null; 
+    const response = new CreateUserDto_Res();
+    response.id = user.id;
+    response.pw = user.pw;
+    response.name = user.name;
+    response.age = user.age;
+
+    return response;
+}
+
     async create(user: CreateUserDto_Res): Promise<void> {
-        await this.userRepository.save(user);
+        const userData = new User();
+        userData.setter(user)
+        
+        await this.userRepository.save(userData);
     }
     
     async remove(id: string): Promise<void> {
         await this.userRepository.delete(id);
     }
 
-    // async update(id: string, user: User): Promise<void> {
-    //     const existCat = await this.userRepository.findOne(id);
-    //     if(existCat){
-    //         await getConnection()
-    //             .createQueryBuilder()
-    //             .update(User)
-    //             .set({ 
-    //                 id: user.id,
-    //                 pw: user.pw,
-    //                 name: user.name, 
-    //                 age: user.age,
-    //             })
-    //             .where("id = :id", { id })
-    //             .execute();
-    //     }
-    // }
+    async update(id: string, user: CreateUserDto_Res): Promise<void> {
+        const existUser = await this.userRepository.findOne({
+            where: { id: id}
+        });
+        if (existUser) {
+        await this.userRepository.update(id, {
+            id: user.id,
+            pw: user.pw,
+            name: user.name,
+            age: user.age,
+            });
+    } else {
+        throw new Error('User not found');
+    }
+    }
 
     myID: string;
     myPW: string;
@@ -70,7 +86,7 @@ export class HelloService {
     }
 
     CreateBoard(body : Board){
-        const bodyresult = new Board_Res();
+        const bodyresult = new Board_Res0();
         bodyresult.Title = body.Title;
         bodyresult.Des = body.Des;
         return bodyresult;

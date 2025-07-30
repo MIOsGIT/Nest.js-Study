@@ -1,0 +1,42 @@
+import { Controller, Get, Patch, Post, Body, Query, Delete, Param } from '@nestjs/common';
+import { BoardService } from './board.service';
+import { Board_Req, User_Req } from 'src/dto/request';
+import { Board_Res, User_Res } from 'src/dto/reponse';
+import { board_create_reponse_dto } from 'src/dto/board.create.reponse';
+import { board_findone_request_dto } from 'src/dto/board.findone.request';
+import { Board_ } from './entity/board.entity';
+
+@Controller('board')
+export class BoardController {
+    private readonly boardService: BoardService;
+    constructor(_BoardService: BoardService) {
+    this.boardService = _BoardService;
+    }
+
+    //게시물 관련 요청
+    @Get('/All')
+    findAll(): Promise<Board_[]> {
+    return this.boardService.findAll();
+    }
+
+    @Get()
+    findOne(@Body() body: board_findone_request_dto) {
+    return this.boardService.findOneByUserId(body);
+    }
+
+    @Post()
+    create(@Body() body: board_create_reponse_dto){
+    return this.boardService.create(body);
+    }
+
+    // @Patch(':id/:number')
+    // update(@Param('id')id: string, @Param('number') number: number, @Body() user: User_Res, @Body() board_new: Board_Res){
+    // this.boardService.update(user, number, board_new);
+    // return `This action updates a ${id} / ${number}`;
+    // }
+
+    // @Delete(':id/:number')
+    // remote(@Param('id') id:string, @Param('number') number: number, @Body() user: User_Res){
+    // this.boardService.remove(user, number);
+    // }
+}

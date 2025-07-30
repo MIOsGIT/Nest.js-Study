@@ -24,3 +24,16 @@ export class CreateUserDto {
     age: number;
     isActive: boolean;
 }
+
+export class User_Req {
+    id: string;
+    pw: string;
+    name: string;
+    age: number;
+}
+
+export class Board_Req {
+    id: string;
+    title: string;
+    description: string;
+}
