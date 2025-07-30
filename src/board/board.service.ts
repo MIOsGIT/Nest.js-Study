@@ -7,6 +7,8 @@ import { Board_ } from './entity/board.entity';
 import { Board_Req, User_Req } from 'src/dto/request';
 import { board_create_reponse_dto } from 'src/dto/board.create.reponse';
 import { board_findone_request_dto } from 'src/dto/board.findone.request';
+import { board_update_request_dto } from 'src/dto/board.update.request';
+import { board_delete_request_dto } from 'src/dto/board.delete.request';
 
 @Injectable()
 export class BoardService {
@@ -48,48 +50,51 @@ export class BoardService {
         }
     }
     
-    // // 게시물 수정
-    // async update(user: User_Res, number: number, board_new: Board_Res): Promise<void> {
-    //     const user_ok = await this.userRepository.findOne({
-    //         where: { id: user.id }
-    //     });
-    //     if (!user_ok || user_ok.pw !== user.pw) {
-    //     throw new Error('User not found or password incorrect');
-    //     }
-    //     const board = await this.boardRepository.findOne({
-    //         where: { number: number }
-    //     });
-    //     if (!board) {
-    //         throw new Error('Board post not found');
-    //     }
-    //     if (board.user_id !== user.id) {
-    //         throw new Error('You can only update your own posts');
-    //     }
-    //     await this.boardRepository.update(number, {
-    //         title: board_new.title,
-    //         description: board_new.description,
-    //     })
+    // 게시물 수정
+    async update(body : board_update_request_dto): Promise<void> {
+        const user_ok : User_ | null = await this.userRepository.findOne({
+            where: { id: body.user_id }
+        });
+        if (!user_ok || user_ok.pw !== body.pw) {
+        throw new Error('User not found or password incorrect');
+        }
+        const board = await this.boardRepository.findOne({
+            where: { number: body.number },
+            relations: ['user']
+        });
+        if (!board) {
+            throw new Error('Board post not found');
+        }
+        if (board.user.id !== body.user_id) {
+            throw new Error('You can only update your own posts');
+        }
+        await this.boardRepository.update(body.number, {
+            title: body.title,
+            description: body.description,
+            createdAt: new Date(),
+        })
         
-    // }
+    }
     
-    // // 게시물 삭제
-    // async remove(user: User_Res, number: number): Promise<void> {
-    //     const user_ok = await this.userRepository.findOne({
-    //     where: { id: user.id }
-    //     });
+    // 게시물 삭제
+    async remove(body: board_delete_request_dto): Promise<void> {
+        const user_ok = await this.userRepository.findOne({
+        where: { id: body.user_id }
+        });
 
-    //     if (!user_ok || user_ok.pw !== user.pw) {
-    //         throw new Error('User not found or password incorrect');
-    //     }
-    //     const board = await this.boardRepository.findOne({
-    //         where: { number: number }
-    //     });
-    //     if (!board) {
-    //         throw new Error('Board post not found');
-    //     }
-    //     if (board.user_id !== user.id) {
-    //         throw new Error('You can only delete your own posts');
-    //     }
-    //     await this.boardRepository.delete(number);
-    // }
+        if (!user_ok || user_ok.pw !== body.pw) {
+            throw new Error('User not found or password incorrect');
+        }
+        const board = await this.boardRepository.findOne({
+            where: { number: body.number },
+            relations: ['user']
+        });
+        if (!board) {
+            throw new Error('Board post not found');
+        }
+        if (board.user.id !== body.user_id) {
+            throw new Error('You can only delete your own posts');
+        }
+        await this.boardRepository.delete(body.number);
+    }
 }

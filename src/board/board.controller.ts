@@ -5,6 +5,8 @@ import { Board_Res, User_Res } from 'src/dto/reponse';
 import { board_create_reponse_dto } from 'src/dto/board.create.reponse';
 import { board_findone_request_dto } from 'src/dto/board.findone.request';
 import { Board_ } from './entity/board.entity';
+import { board_update_request_dto } from 'src/dto/board.update.request';
+import { board_delete_request_dto } from 'src/dto/board.delete.request';
 
 @Controller('board')
 export class BoardController {
@@ -29,14 +31,14 @@ export class BoardController {
     return this.boardService.create(body);
     }
 
-    // @Patch(':id/:number')
-    // update(@Param('id')id: string, @Param('number') number: number, @Body() user: User_Res, @Body() board_new: Board_Res){
-    // this.boardService.update(user, number, board_new);
-    // return `This action updates a ${id} / ${number}`;
-    // }
+    @Patch()
+    update(@Body() body: board_update_request_dto){
+    this.boardService.update(body);
+    return `This action updates a ${body.user_id} / ${body.number}`;
+    }
 
-    // @Delete(':id/:number')
-    // remote(@Param('id') id:string, @Param('number') number: number, @Body() user: User_Res){
-    // this.boardService.remove(user, number);
-    // }
+    @Delete()
+    remote(@Body() body: board_delete_request_dto){
+    this.boardService.remove(body);
+    }
 }
