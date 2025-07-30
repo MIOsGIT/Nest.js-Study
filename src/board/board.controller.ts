@@ -15,7 +15,7 @@ export class BoardController {
     this.boardService = _BoardService;
     }
 
-    //게시물 관련 요청
+    //게시물
     @Get('/All')
     findAll(): Promise<Board_[]> {
     return this.boardService.findAll();

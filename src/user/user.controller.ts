@@ -3,6 +3,9 @@ import { UserService } from './user.service';
 import { Board_Req, User_Req } from 'src/dto/request';
 import { Board_Res, User_Res } from 'src/dto/reponse';
 import { board_create_reponse_dto } from 'src/dto/board.create.reponse';
+import { user_create_request_dto } from 'src/dto/user.create.request';
+import { user_update_request_dto } from 'src/dto/user.update.request';
+import { user_delete_request_dto } from 'src/dto/user.delete.request';
 
 
 @Controller('user')
@@ -17,24 +20,19 @@ export class UserController {
     return this.userService.findAll_user();
     }
 
-    @Get(':id')
-    findOne_user(@Param('id') id: string): Promise<User_Res | null> {
-    return this.userService.findOne_user(id);
-    }
-
     @Post()
-    create_user(@Body() user:User_Req){
-    return this.userService.create_user(user);
+    create_user(@Body() body: user_create_request_dto){
+    return this.userService.create_user(body);
     }
 
-    @Patch(':id')
-    update_user(@Param('id')id: string, @Body() user: User_Res){
-    this.userService.update_user(id, user);
-    return `This action updates a #${id}`;
+    @Patch()
+    update_user(@Body() body: user_update_request_dto){
+    this.userService.update_user(body);
+    return `This action updates a ${body.id}`;
     }
 
-    @Delete(':id')
-    remote_user(@Param('id') id:string){
-    this.userService.remove_user(id);
+    @Delete()
+    remote_user(@Body() body: user_delete_request_dto){
+    this.userService.remove_user(body);
     }
 }
