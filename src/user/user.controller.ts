@@ -17,7 +17,8 @@ export class UserController {
 
     @Get()
     findAll_user(): Promise<User_Res[]> {
-    return this.userService.findAll_user();
+    const result = this.userService.findAll_user();
+    return result;
     }
 
     @Post()

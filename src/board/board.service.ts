@@ -20,13 +20,13 @@ export class BoardService {
     ){}
 
     // 게시물 리스트 조회
-    findAll(): Promise<Board_[]> {
+    async findAll(): Promise<Board_[]> {
         return this.boardRepository.find();
     }
 
     // 게시물 상세 조회
     async findOneByUserId(dto: board_findone_request_dto): Promise<Board_[]> {
-        const query = this.boardRepository.createQueryBuilder('Board_');
+        const query = await this.boardRepository.createQueryBuilder('Board_');
         query.leftJoin('Board_.user', 'user');
         query.addSelect(['user.id']);
         query.where('user.id = :id', { id: dto.user_id });

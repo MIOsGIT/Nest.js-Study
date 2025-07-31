@@ -22,7 +22,7 @@ export class UserService {
     ){}
 
     // 유저 리스트 조회
-    findAll_user(): Promise<User_[]> {
+    async findAll_user(): Promise<User_[]> {
         return this.userRepository.find();
     }
 
@@ -30,7 +30,8 @@ export class UserService {
     async create_user(body: user_create_request_dto): Promise<void> {
         const userData = new User_();
         userData.setter(body)
-        await this.userRepository.save(userData);
+        this.userRepository.save(userData);
+        return;
     }
     
     // 유저 수정

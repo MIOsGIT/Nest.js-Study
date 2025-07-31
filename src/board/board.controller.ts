@@ -17,17 +17,17 @@ export class BoardController {
 
     //게시물
     @Get('/All')
-    findAll(): Promise<Board_[]> {
+    async findAll(): Promise<Board_[]> {
     return this.boardService.findAll();
     }
 
     @Get()
-    findOne(@Body() body: board_findone_request_dto){
+    async findOne(@Body() body: board_findone_request_dto){
     return this.boardService.findOneByUserId(body);
     }
 
     @Post()
-    create(@Body() body: board_create_reponse_dto){
+    async create(@Body() body: board_create_reponse_dto){
     return this.boardService.create(body);
     }
 
@@ -38,7 +38,7 @@ export class BoardController {
     }
 
     @Delete()
-    remote(@Body() body: board_delete_request_dto){
+    async remote(@Body() body: board_delete_request_dto){
     return this.boardService.remove(body);
     }
 }
