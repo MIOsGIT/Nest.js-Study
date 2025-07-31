@@ -22,7 +22,7 @@ export class BoardController {
     }
 
     @Get()
-    findOne(@Body() body: board_findone_request_dto) {
+    findOne(@Body() body: board_findone_request_dto){
     return this.boardService.findOneByUserId(body);
     }
 
@@ -32,13 +32,13 @@ export class BoardController {
     }
 
     @Patch()
-    update(@Body() body: board_update_request_dto){
-    this.boardService.update(body);
+    async update(@Body() body: board_update_request_dto) {
+    await this.boardService.update(body);
     return `This action updates a ${body.user_id} / ${body.number}`;
     }
 
     @Delete()
     remote(@Body() body: board_delete_request_dto){
-    this.boardService.remove(body);
+    return this.boardService.remove(body);
     }
 }

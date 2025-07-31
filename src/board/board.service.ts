@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User_ } from '../user/entity/user.entity';
@@ -46,7 +46,7 @@ export class BoardService {
             boardData.user = user_ok;
             await this.boardRepository.save(boardData);
         } else {
-            throw new Error('User not found or password incorrect');
+            throw new BadRequestException('회원 정보가 일치하지 않습니다!');
         }
     }
     
@@ -56,17 +56,17 @@ export class BoardService {
             where: { id: body.user_id }
         });
         if (!user_ok || user_ok.pw !== body.pw) {
-        throw new Error('User not found or password incorrect');
+            throw new BadRequestException('회원 정보가 일치하지 않습니다!');
         }
         const board = await this.boardRepository.findOne({
             where: { number: body.number },
             relations: ['user']
         });
         if (!board) {
-            throw new Error('Board post not found');
+            throw new NotFoundException('게시물이 존재하지 않습니다.');
         }
         if (board.user.id !== body.user_id) {
-            throw new Error('You can only update your own posts');
+            throw new BadRequestException('본인이 작성한 글만 수정할 수 있습니다.');
         }
         await this.boardRepository.update(body.number, {
             title: body.title,
@@ -83,17 +83,17 @@ export class BoardService {
         });
 
         if (!user_ok || user_ok.pw !== body.pw) {
-            throw new Error('User not found or password incorrect');
+            throw new BadRequestException('회원 정보가 일치하지 않습니다!');
         }
         const board = await this.boardRepository.findOne({
             where: { number: body.number },
             relations: ['user']
         });
         if (!board) {
-            throw new Error('Board post not found');
+            throw new NotFoundException('게시물이 존재하지 않습니다.');
         }
         if (board.user.id !== body.user_id) {
-            throw new Error('You can only delete your own posts');
+            throw new BadRequestException('본인이 작성한 글만 삭제할 수 있습니다.');
         }
         await this.boardRepository.delete(body.number);
     }
