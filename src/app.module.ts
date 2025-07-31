@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { HelloModule } from './hello2/hello.module';
+import { HelloModule } from './hello/hello.module';
 import { MainModule } from './main/main.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './hello2/entity/user.entity';
+import { User } from './hello/entity/user.entity';
 import { BoardModule } from './board/board.module';
 import { User_ } from './user/entity/user.entity';
 import { Board } from './dto/request';

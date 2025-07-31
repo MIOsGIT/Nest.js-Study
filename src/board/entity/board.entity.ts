@@ -19,7 +19,7 @@ export class Board_{
     @Column()
     createdAt: Date;
 
-    @ManyToOne(() => User_)
+    @ManyToOne(() => User_, { onDelete: 'CASCADE' })
     user: User_;
 
     constructor(){
@@ -30,5 +30,4 @@ export class Board_{
     this.title = dto.title;
     this.description = dto.description;
     }
-
 }
